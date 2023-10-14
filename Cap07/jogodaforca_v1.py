@@ -112,7 +112,8 @@ def game():
     # Lista de palavras erradas
     letras_erradas = []
 
-    frase = " "
+    # Lista de palavras digitadas
+    letras_digitas = []
 
     while chances > 0:
 
@@ -123,10 +124,31 @@ def game():
         print(" ".join(letras_descobertas))
         print("\nChances restantes:", chances)
         print("Letras erradas:", " ".join(letras_erradas))
-        print("\n",frase)
+                
         # Tentativa
         tentativa = input("\nDigite uma letra: ").lower()
 
+
+        while tentativa in letras_digitas or len(tentativa) > 1 or tentativa.isalpha() == False:
+            limpatela()
+
+            # Print
+            print(desenho_boneco(chances))
+            print(" ".join(letras_descobertas))
+            print("\nChances restantes:", chances)
+            print("Letras erradas:", " ".join(letras_erradas))
+            
+            if tentativa in letras_digitas:
+                print("\nEsta letra já foi digitada. Tente Novamente!")
+            elif len(tentativa) > 1:
+                print("\nDigite apenas UMA letra. Tente Novamente!")
+            elif tentativa.isalpha() == False:
+                print("\nDigite apenas LETRAS. Tente Novamente!")
+            tentativa = input("\nDigite uma letra: ").lower()
+            
+        if tentativa not in letras_digitas:
+            letras_digitas.append(tentativa)
+            
         # Condicional
         if tentativa in palavra.lower():
             index = 0
@@ -134,13 +156,11 @@ def game():
             for letra in palavra:
                 if tentativa == letra.lower():
                     letras_descobertas[index] = letra
-                    if tentativa in letras_descobertas and tentativa in letras_erradas:
-                        frase = "Está letra já foi digitada"
                 index += 1
         else:
             chances -= 1
             letras_erradas.append(tentativa)
-
+        
         # Condicional
         if "_" not in letras_descobertas:
             limpatela()
@@ -148,16 +168,15 @@ def game():
             print(" ".join(letras_descobertas))
             print("\nParabéns você venceu!")
             print("\nChances restantes:", chances)
-            print("Letras erradas:", " ".join(letras_erradas))
+            print("Letras erradas:", " ".join(letras_erradas), "\n")
             break
             
     # Condicional        
     if "_" in letras_descobertas:
         limpatela()
         print(desenho_boneco(chances))
-        print("\nVocê Perdeu, a palavra era", palavra)
+        print("\nVocê Perdeu, a palavra era", palavra, "\n")
 
 # Bloco Main
 if __name__ == "__main__":
     game()
-    print("\nDeus me ajuda a aprender e entender tudo. Amém!!\n") 
