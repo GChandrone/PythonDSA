@@ -97,11 +97,14 @@ def game():
     print("\nBem-Vindo(a) ao jogo da forca!")
     print("Adivinhe a palavra abaixo:\n")
 
-    # Lista de palavras para o jogo
-    palavras = ['Banana', 'Uva', 'Morango', 'Laranja', 'Abacate', 'Manga']
-   
+    # Pegando a Lista de palavras por um arquivo txt
+    with open('Cap07/ListadeObjetos.txt','r') as arquivo:
+        palavras = arquivo.read().split(",")
+    
+    palavras_s = [wordl.strip() for wordl in palavras]
+    
     # Escolhe aleatoriamente uma palavra
-    palavra = random.choice(palavras) 
+    palavra = random.choice(palavras_s) 
     
     # List comprehension
     letras_descobertas = ['_' for letra in palavra]
