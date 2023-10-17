@@ -125,44 +125,64 @@ def game():
         # Print
         print(desenho_boneco(chances))
         print(" ".join(letras_descobertas))
-        print("\nChances restantes:", chances)
+        print("\nChances restantes:", chances)        
         print("Letras erradas:", " ".join(letras_erradas))
                 
-        # Tentativa
-        tentativa = input("\nDigite uma letra: ").lower()
+        # Menu
+        print("\n[1] Adivinhar a Palavra")
+        print("[2] Adivinhar uma Letra")
+        opcao = input("Opção: ")
+        
+         # ADIVINHAR A PALAVRA
+        if opcao == "1":
+            adv_palavra = input("\nDigite a Palavra: ")
+            if palavra.lower() == adv_palavra.lower():
+                #NÃO ESTA CONSIDERANDO COMO INTEIRO A VARIAVEL i
+                for i in len(letras_descobertas):
+                    letras_descobertas[i] = palavra[i]
+            else:
+                chances = 0
 
-
-        while tentativa in letras_digitas or len(tentativa) > 1 or tentativa.isalpha() == False:
-            limpatela()
-
-            # Print
-            print(desenho_boneco(chances))
-            print(" ".join(letras_descobertas))
-            print("\nChances restantes:", chances)
-            print("Letras erradas:", " ".join(letras_erradas))
-            
-            if tentativa in letras_digitas:
-                print("\nEsta letra já foi digitada. Tente Novamente!")
-            elif len(tentativa) > 1:
-                print("\nDigite apenas UMA letra. Tente Novamente!")
-            elif tentativa.isalpha() == False:
-                print("\nDigite apenas LETRAS. Tente Novamente!")
+        # ADIVINHAR UMA LETRA 
+        elif opcao == "2":
+                 
+            # Tentativa
             tentativa = input("\nDigite uma letra: ").lower()
-            
-        if tentativa not in letras_digitas:
-            letras_digitas.append(tentativa)
-            
-        # Condicional
-        if tentativa in palavra.lower():
-            index = 0
+            while tentativa in letras_digitas or len(tentativa) > 1 or tentativa.isalpha() == False:
+                limpatela()
 
-            for letra in palavra:
-                if tentativa == letra.lower():
-                    letras_descobertas[index] = letra
-                index += 1
+                # Print
+                print(desenho_boneco(chances))
+                print(" ".join(letras_descobertas))
+                print("\nChances restantes:", chances)
+                print("Letras erradas:", " ".join(letras_erradas))
+                
+                if tentativa in letras_digitas:
+                    print("\nEsta letra já foi digitada. Tente Novamente!")
+                elif len(tentativa) > 1:
+                    print("\nDigite apenas UMA letra. Tente Novamente!")
+                elif tentativa.isalpha() == False:
+                    print("\nDigite apenas LETRAS. Tente Novamente!")
+                tentativa = input("\nDigite uma letra: ").lower()
+                
+            if tentativa not in letras_digitas:
+                letras_digitas.append(tentativa)
+                
+            # Condicional
+            if tentativa in palavra.lower():
+                index = 0
+
+                for letra in palavra:
+                    if tentativa == letra.lower():
+                        letras_descobertas[index] = letra
+                    index += 1
+            else:
+                chances -= 1
+                letras_erradas.append(tentativa)
+        
         else:
-            chances -= 1
-            letras_erradas.append(tentativa)
+            print("Opção inválida")
+        
         
         # Condicional
         if "_" not in letras_descobertas:
