@@ -91,11 +91,12 @@ def desenho_boneco(chances):
 
 # Função Principal
 def game():
-
-    limpatela()
     
+
     print("\nBem-Vindo(a) ao jogo da forca!")
     print("Adivinhe a palavra abaixo:\n")
+
+    input("Aperte [Enter] para começar! ")
 
     # Pegando a Lista de palavras por um arquivo txt
     with open('Cap07/ListadeObjetos.txt','r') as arquivo:
@@ -137,8 +138,7 @@ def game():
         if opcao == "1":
             adv_palavra = input("\nDigite a Palavra: ")
             if palavra.lower() == adv_palavra.lower():
-                #NÃO ESTA CONSIDERANDO COMO INTEIRO A VARIAVEL i
-                for i in len(letras_descobertas):
+                for i in range(len(palavra)):
                     letras_descobertas[i] = palavra[i]
             else:
                 chances = 0
