@@ -176,3 +176,6 @@ class Hangman:
 		
 	# Método para checar o status do game e imprimir o board na tela
 
+jogo = Hangman()
+
+jogo.tentativa()
