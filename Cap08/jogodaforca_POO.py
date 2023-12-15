@@ -93,16 +93,27 @@ def desenho_boneco(chances):
 class Hangman:
 
 	# Método Construtor
-    def __init__(self):
+    def __init__(self, palavra):
+        self.palavra = palavra
+        self.letras_erradas = []
+        self.letras_digitas = []
+
+    def guess(self, letra):
+
+        if letra in self.palavra and letra not in self.letras_digitas:
+            self.letras_digitas.append(letra)
+
+        elif letra not in self.palavra and letra not in self.letras_erradas:
+            self.letras_erradas.append(letra)
         
-        with open('Cap07/ListadeObjetos.txt','r') as arquivo:
-            self.palavras = arquivo.read().split(",")
-    
-        self.palavras_s = [wordl.strip() for wordl in self.palavras]
+        else:
+            return False
         
-        # Escolhe aleatoriamente uma palavra
-        self.palavra = random.choice(self.palavras_s) 
+        return True
         
+    def hangman_over(self):
+        return self.hangman_won() or len(self.letras_erradas == 6)
+
         # List comprehension
         self.letras_descobertas = ['_' for letra in self.palavra]
 
@@ -176,6 +187,21 @@ class Hangman:
 		
 	# Método para checar o status do game e imprimir o board na tela
 
-jogo = Hangman()
+def rand_palavra():
 
-jogo.tentativa()
+    with open('Cap07/ListadeObjetos.txt','r') as arquivo:
+            palavras = arquivo.read().split(",")
+    
+        palavras_s = [wordl.strip() for wordl in palavras]
+        
+        # Escolhe aleatoriamente uma palavra
+        palavra = random.choice(palavras_s) 
+
+        return palavra
+
+def main():
+    
+    limpatela()
+
+    game = 
+
