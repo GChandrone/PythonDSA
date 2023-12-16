@@ -7,87 +7,87 @@ from os import system, name
 # Função para limpar a tela a cada execução
 def limpatela():
 
+    # Windows
     if name == 'nt':
-        system('cls')
+        _ = system('cls')
+    
+    # Mac ou Linux
     else:
-        system('clear')
+        _ = system('clear')
 
-# Função que desenha a forca na tela
-def desenho_boneco(chances):
 
-    # Lista de estágios da forca
-    estagios = [ # estágio 6 (final)
-     """
-        +------+
-        |      |
-        |      O
-        |     \\|/
-        |      |
-        |     / \\
-        -
-     """,
-     # estágio 5
-     """
-        +------+
-        |      |
-        |      O
-        |     \\|/
-        |      |
-        |     / 
-        -
-     """,
-     # estágio 4
-     """
-        +------+
-        |      |
-        |      O
-        |     \\|/
-        |      |
-        |      
-        -
-     """,
-     # estágio 3
-     """
-        +------+
-        |      |
-        |      O
-        |     \\|
-        |      |
-        |     
-        -
-     """,
-     # estágio 2
-     """
-        +------+
-        |      |
-        |      O
-        |      |
-        |      |
-        |     
-        -
-     """,
-     # estágio 1
-     """
-        +------+
-        |      |
-        |      O
-        |    
-        |      
-        |     
-        -
-     """,
-     # estágio 0
-     """
-        +------+
-        |      |
-        |      
-        |    
-        |      
-        |     
-        -
-     """
-    ]
-    return estagios[chances]
+estagios = [ 
+# estágio 6 (final)
+"""
++------+
+|      |
+|      O
+|     \\|/
+|      |
+|     / \\
+-
+""",
+# estágio 5
+"""
++------+
+|      |
+|      O
+|     \\|/
+|      |
+|     / 
+-
+""",
+# estágio 4
+"""
++------+
+|      |
+|      O
+|     \\|/
+|      |
+|      
+-
+""",
+# estágio 3
+"""
++------+
+|      |
+|      O
+|     \\|
+|      |
+|     
+-
+""",
+# estágio 2
+"""
++------+
+|      |
+|      O
+|      |
+|      |
+|     
+-
+""",
+# estágio 1
+"""
++------+
+|      |
+|      O
+|    
+|      
+|     
+-
+""",
+# estágio 0
+"""
++------+
+|      |
+|      
+|    
+|      
+|     
+-
+"""
+]
 
 # Classe
 class Hangman:
@@ -96,12 +96,13 @@ class Hangman:
     def __init__(self, palavra):
         self.palavra = palavra
         self.letras_erradas = []
-        self.letras_digitas = []
+        self.letras_descobertas = []
 
+    # Método para adivinhar a letra
     def guess(self, letra):
 
-        if letra in self.palavra and letra not in self.letras_digitas:
-            self.letras_digitas.append(letra)
+        if letra in self.palavra and letra not in self.letras_descobertas:
+            self.letras_descobertas.append(letra)
 
         elif letra not in self.palavra and letra not in self.letras_erradas:
             self.letras_erradas.append(letra)
@@ -111,97 +112,97 @@ class Hangman:
         
         return True
         
+    # Método para verificar se o jogo terminou    
     def hangman_over(self):
-        return self.hangman_won() or len(self.letras_erradas == 6)
+        return self.hangman_won() or (len(self.letras_erradas) == 6)
 
-        # List comprehension
-        self.letras_descobertas = ['_' for letra in self.palavra]
+    # Método para verificar se o jogador venceu  
+    def hangman_won(self):
 
-        # Número de chances
-        self.chances = 6
+        if '_' not in self.hide_palavra():
+            return True
+        return False  
+      
+    # Método para não mostrar a letra no board  
+    def hide_palavra(self):
 
-        # Lista de palavras erradas
-        self.letras_erradas = []
+        rtn = ''
 
-        # Lista de palavras digitadas
-        self.letras_digitas = []
-
-	# Método para adivinhar a letra
-    def tentativa(self):
-             
-             tentativa = input("\nDigite uma letra: ").lower()
-             
-             while tentativa in self.letras_digitas or len(tentativa) > 1 or tentativa.isalpha() == False:
-                
-                limpatela()
-
-                # Print
-                print(desenho_boneco(self.chances))
-                print(" ".join(self.letras_descobertas))
-                print("\nChances restantes:", self.chances)
-                print("Letras erradas:", " ".join(self.letras_erradas))
-                
-                if tentativa in self.letras_digitas:
-                    print("\nEsta letra já foi digitada. Tente Novamente!")
-                elif len(tentativa) > 1:
-                    print("\nDigite apenas UMA letra. Tente Novamente!")
-                elif tentativa.isalpha() == False:
-                    print("\nDigite apenas LETRAS. Tente Novamente!")
-                tentativa = input("\nDigite uma letra: ").lower()
-                    
-                if tentativa not in self.letras_digitas:
-                    self.letras_digitas.append(tentativa)
-                    
-                # Condicional
-                if tentativa in self.palavra.lower():
-                    index = 0
-
-                    for letra in self.palavra:
-                        if tentativa == letra.lower():
-                            self.letras_descobertas[index] = letra
-                        index += 1
-                else:
-                    self.chances -= 1
-                    self.letras_erradas.append(tentativa)
-        
-	# Método para verificar se o jogo terminou
-    def terminou(self):
-        
-            if "_" in self.letras_descobertas:
-                limpatela()
-                print(desenho_boneco(self.chances))
-                print("\nVocê Perdeu, a palavra era", self.palavra, "\n")	
-
-	# Método para verificar se o jogador venceu
-    def venceu(self):
-        # Condicional
-        if "_" not in self.letras_descobertas:
-            limpatela()
-            print(desenho_boneco(self.chances))
-            print(" ".join(self.letras_descobertas))
-            print("\nParabéns você venceu!")
-            print("\nChances restantes:", self.chances)
-            print("Letras erradas:", " ".join(self.letras_erradas), "\n")
+        for letra in self.palavra:
+            if letra not in self.letras_descobertas:
+                rtn += '_'
+            else:
+                rtn += letra
+        return rtn
 	
-    # Método para não mostrar a letra no board
-		
-	# Método para checar o status do game e imprimir o board na tela
+    # Método para checar o status do game e imprimir o board na tela
+    def print_game_status(self):
 
+        print(estagios[len(self.letras_erradas)])
+
+        print('\nPalavra: ' + self.hide_palavra())  
+      
+        print('\nLetras erradas: ',)
+
+        for letra in self.letras_erradas:
+            print(letra,)
+
+        print() 
+
+        print('Letras corretas: ',)
+
+        for letra in self.letras_descobertas:
+            print(letra,)
+
+        print()
+
+# Método para ler uma palavra de forma aleatória do banco de palavras
 def rand_palavra():
 
     with open('Cap07/ListadeObjetos.txt','r') as arquivo:
-            palavras = arquivo.read().split(",")
+        palavras = arquivo.read().split(",")
     
-        palavras_s = [wordl.strip() for wordl in palavras]
-        
-        # Escolhe aleatoriamente uma palavra
-        palavra = random.choice(palavras_s) 
 
-        return palavra
+    palavras_s = [wordl.strip() for wordl in palavras]
+    
+    # Escolhe aleatoriamente uma palavra
+    palavra = random.choice(palavras_s) 
 
+    return palavra	
+
+# Método Main - Execução do Programa
 def main():
-    
+
     limpatela()
 
-    game = 
+	# Cria o objeto e seleciona uma palavra randomicamente
+    game = Hangman(rand_palavra().lower())
 
+	# Enquanto o jogo não tiver terminado, print do status, solicita uma letra e faz a leitura do caracter    
+    while not game.hangman_over():
+        
+        #  Status do game
+        game.print_game_status()
+
+        # Recebe input do terminal
+        user_input = input('\nDigite uma letra: ')
+
+        # Verifica se a letra digitada faz parte da palavra
+        game.guess(user_input.lower())
+
+    # Verifica o status do jogo
+    game.print_game_status()
+
+    # De acordo com o status, imprime mensagem na tela para o usuário
+    if game.hangman_won():
+        print('\nParabéns! Você venceu!')
+    
+    else:
+        print('\nGame Over! Você perdeu.')
+        print ('A palavra era ' + game.palavra)
+
+    print('\nFoi bom jogar com você! Agora vá estudar!\n')
+
+# Executa o programa
+if __name__ == "__main__":
+    main()
