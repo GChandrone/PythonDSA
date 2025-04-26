@@ -1,2 +1,2 @@
 # PythonDSA
-Cusrso sobre Analise de dados com Python
+Curso sobre Analise de dados com Python
